@@ -290,46 +290,49 @@
           <ul class="list-disc list-inside space-y-1">
             <% assignments.forEach(({ _id, teacher, grade }) => { %>
               <li class="flex justify-between items-center gap-2">
-                <span>
-                  <%= teacher.fullName %> (<%= teacher.email %>) - Grade <%= grade === 0 ? 'All' : grade %>
-                </span>
+            <span>
+                <% if (teacher) { %>
+                <%= teacher.fullName %> (<%= teacher.email %>) - Grade <%= grade === 0 ? 'All' : grade %>
+                <% } else { %>
+                <em>No teacher assigned</em> - Grade <%= grade === 0 ? 'All' : grade %>
+                <% } %>
+            </span>
 
-                <div class="space-x-2">
-                  <!-- Edit Assignment -->
+            <div class="space-x-2">
+                <!-- Edit Assignment -->
                 <a href="/dashboard/admin/subjects/edit-assignment/<%= _id %>" class="text-blue-600 hover:underline text-sm mr-2">Edit</a>
 
-                  
+                <!-- Delete Assignment -->
+                <form 
+                action="/dashboard/admin/delete-subjects/<%= _id %>" 
+                method="POST" 
+                class="inline"
+                onsubmit="return confirm('Are you sure you want to remove this assignment?')"
+                >
+                <button type="submit" class="text-red-600 hover:underline text-sm">Delete</button>
+                </form>
+            </div>
+            </li>
 
-                  <!-- Delete Assignment -->
-                  <form 
-                    action="/dashboard/admin/delete-subjects/<%= _id %>" 
-                    method="POST" 
-                    class="inline"
-                    onsubmit="return confirm('Are you sure you want to remove this assignment?')"
-                  >
-                    <button type="submit" class="text-red-600 hover:underline text-sm">Delete</button>
-                  </form>
-                </div>
-              </li>
+                        <% }) %>
+                    </ul>
+                    <% } else { %>
+                    <em class="text-gray-500">Not assigned yet</em>
+                    <% } %>
+                </td>
+
+                <!-- Edit Subject button (not per teacher) -->
+                <td class="border border-[#800000] p-3">
+                    <a 
+                    href="/dashboard/admin/subjects/add-assignment/<%= subject %>" 
+                    class="text-[#800000] hover:underline text-sm"
+                    >
+                    Add New
+                    </a>
+                </td>
+                </tr>
             <% }) %>
-          </ul>
-        <% } else { %>
-          <em class="text-gray-500">Not assigned yet</em>
-        <% } %>
-      </td>
-
-      <!-- Edit Subject button (not per teacher) -->
-      <td class="border border-[#800000] p-3">
-        <a 
-          href="/dashboard/admin/subjects/add-assignment/<%= subject %>" 
-          class="text-[#800000] hover:underline text-sm"
-        >
-          Add New
-        </a>
-      </td>
-    </tr>
-  <% }) %>
-</tbody>
+            </tbody>
     </table>
   </div>
   
