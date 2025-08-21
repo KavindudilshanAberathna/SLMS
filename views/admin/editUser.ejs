@@ -1,43 +1,145 @@
-<h2 class="text-xl font-bold mb-4">Edit User</h2>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLMS • Edit User</title>
 
-<form action="/dashboard/admin/users/edit/<%= user._id %>" method="POST" enctype="multipart/form-data" class="space-y-4">
-  <div>
-    <label>Full Name:</label>
-    <input type="text" name="fullName" value="<%= user.fullName %>" required class="input" />
-  </div>
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900">
+  <header class="w-full border-b bg-white">
+    <div class="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold tracking-tight text-[#800000]">Admin • Edit User</h1>
+      <a href="/dashboard/admin/users" class="inline-flex items-center gap-2 rounded-xl border border-[#800000]/20 bg-white px-4 py-2 text-sm font-medium text-[#800000] hover:bg-[#800000]/5 focus:outline-none focus:ring-4 focus:ring-[#800000]/20 transition">
+        ⬅ Back
+      </a>
+    </div>
+  </header>
 
-  <div>
-    <label>Email:</label>
-    <input type="email" name="email" value="<%= user.email %>" required class="input" />
-  </div>
+  <main class="mx-auto max-w-4xl px-4 py-8">
+    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+      <h2 class="text-xl font-bold mb-6 text-[#800000]">Edit User</h2>
 
-  <div>
-    <label>Role:</label>
-    <select name="role" class="input">
-      <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
-      <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
-      <option value="parent" <%= user.role === 'parent' ? 'selected' : '' %>>Parent</option>
-      <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
-    </select>
-  </div>
+      <form action="/dashboard/admin/users/edit/<%= user._id %>" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <!-- Full Name -->
+        <div class="grid gap-2">
+          <label for="fullName" class="text-sm font-medium text-gray-700">Full Name</label>
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            value="<%= user.fullName %>"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm shadow-sm"
+          />
+        </div>
 
-  <div>
-    <label>Class:</label>
-    <input type="text" name="className" value="<%= user.className || '' %>" class="input" />
-  </div>
+        <!-- Email -->
+        <div class="grid gap-2">
+          <label for="email" class="text-sm font-medium text-gray-700">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value="<%= user.email %>"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm shadow-sm"
+          />
+        </div>
 
-  <div>
-    <label>Stream:</label>
-    <input type="text" name="stream" value="<%= user.stream || '' %>" class="input" />
-  </div>
+        <!-- Role -->
+        <div class="grid gap-2">
+          <label for="role" class="text-sm font-medium text-gray-700">Role</label>
+          <select
+            id="role"
+            name="role"
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm shadow-sm"
+          >
+            <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
+            <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
+            <option value="parent"  <%= user.role === 'parent'  ? 'selected' : '' %>>Parent</option>
+            <option value="admin"   <%= user.role === 'admin'   ? 'selected' : '' %>>Admin</option>
+          </select>
+        </div>
 
-  <div>
-    <label>Profile Picture:</label><br />
-    <% if (user.profilePicture) { %>
-      <img src="/<%= user.profilePicture %>" class="h-16 w-16 rounded-full object-cover mb-2" />
-    <% } %>
-    <input type="file" name="profilePicture" class="input" />
-  </div>
+        <!-- Class -->
+        <div id="classField" class="grid gap-2">
+          <label for="className" class="text-sm font-medium text-gray-700">Class</label>
+          <input
+            id="className"
+            type="text"
+            name="className"
+            value="<%= user.className || '' %>"
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm shadow-sm"
+          />
+        </div>
 
-  <button type="submit" class="btn btn-primary">Update</button>
-</form>
+        <!-- Stream -->
+        <div id="streamField" class="grid gap-2">
+          <label for="stream" class="text-sm font-medium text-gray-700">Stream</label>
+          <input
+            id="stream"
+            type="text"
+            name="stream"
+            value="<%= user.stream || '' %>"
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm shadow-sm"
+          />
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="grid gap-2">
+          <span class="text-sm font-medium text-gray-700">Profile Picture</span>
+          <% if (user.profilePicture) { %>
+            <img src="/<%= user.profilePicture %>" class="h-20 w-20 rounded-full object-cover ring-2 ring-[#800000]/30" />
+          <% } %>
+          <input
+            type="file"
+            name="profilePicture"
+            class="block w-full rounded-xl border border-gray-300 bg-white text-sm file:mr-4 file:rounded-full file:border-0 file:bg-[#800000] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#660000]"
+          />
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-2">
+          <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[#800000] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#660000]">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function updateFields() {
+      const role = document.getElementById("role").value;
+      const className = document.getElementById("className").value;
+      const classField = document.getElementById("classField");
+      const streamField = document.getElementById("streamField");
+
+      if (role === "student") {
+        classField.style.display = "block";
+        if (className === "Grade 12" || className === "Grade 13") {
+          streamField.style.display = "block";
+        } else {
+          streamField.style.display = "none";
+        }
+      } else {
+        classField.style.display = "none";
+        streamField.style.display = "none";
+      }
+    }
+
+    document.getElementById("role").addEventListener("change", updateFields);
+    document.getElementById("className").addEventListener("input", updateFields);
+
+    // Run on load (for edit mode)
+    updateFields();
+  </script>
+
+  <footer class="mx-auto max-w-4xl px-4 py-8 text-center text-xs text-gray-500">
+    © <%= new Date().getFullYear() %> SLMS. All rights reserved.
+  </footer>
+</body>
+</html>

@@ -178,7 +178,10 @@ exports.apiSendMessage = async (req, res) => {
     const { receiver, content } = req.body;
     if (!receiver || !content) return res.status(400).json({ error: 'receiver and content required' });
 
-    const msg = await Message.create({ sender: me, receiver, content });
+    let msg = await Message.create({ sender: me, receiver, content });
+
+    // Fetch with sender populated
+    msg = await msg.populate('sender', 'fullName profilePicture');
 
     if (io) {
       try {
@@ -187,7 +190,8 @@ exports.apiSendMessage = async (req, res) => {
           sender: String(me),
           receiver: String(receiver),
           content: msg.content,
-          createdAt: msg.createdAt || msg.sentAt
+          createdAt: msg.createdAt || msg.sentAt,
+          senderProfilePicture: msg.sender.profilePicture
         });
       } catch (e) { console.warn('emit error (apiSendMessage)', e); }
     }
@@ -199,7 +203,8 @@ exports.apiSendMessage = async (req, res) => {
         sender: String(me),
         receiver: String(receiver),
         content: msg.content,
-        createdAt: msg.createdAt || msg.sentAt
+        createdAt: msg.createdAt || msg.sentAt,
+        senderProfilePicture: msg.sender.profilePicture
       }
     });
   } catch (err) {
@@ -241,14 +246,28 @@ exports.apiGetHistory = async (req, res) => {
     const conversationKey = a < b ? `${a}:${b}` : `${b}:${a}`;
 
     const messages = await Message.find({ conversationKey })
+      .populate('sender', 'fullName profilePicture')
+      .populate('receiver', 'fullName profilePicture')
       .sort({ createdAt: 1 })
-      .limit(Number(limit))
-      .lean();
+      .limit(Number(limit));
 
-    return res.json({ ok: true, messages });
+    return res.json({
+      ok: true,
+      messages: messages.map(m => ({
+        _id: m._id,
+        sender: m.sender._id,
+        receiver: m.receiver._id,
+        content: m.content,
+        createdAt: m.createdAt,
+        status: m.status,
+        senderProfilePicture: m.sender.profilePicture
+      }))
+    });
   } catch (err) {
     console.error('apiGetHistory error', err);
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
+
 

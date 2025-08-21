@@ -341,6 +341,83 @@
     toggleParentFields(); // Initial state
   });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const roleSelect = document.getElementById('roleSelect');
+  const parentFields = document.getElementById('parentFields');
+
+  const toggleParentFields = () => {
+    parentFields.classList.toggle('hidden', roleSelect.value !== 'parent');
+  };
+
+  roleSelect.addEventListener('change', toggleParentFields);
+  toggleParentFields(); // Initial state
+
+  // ====== Real-time validation ======
+  const emailInput = document.querySelector('input[name="email"]');
+  const contactInput = document.querySelector('input[name="contact"]');
+  const form = document.querySelector('form');
+
+  // Create feedback elements
+  const createFeedback = (input, message) => {
+    let feedback = input.nextElementSibling;
+    if (!feedback || !feedback.classList.contains('feedback')) {
+      feedback = document.createElement('p');
+      feedback.classList.add('text-red-500', 'text-sm', 'feedback', 'mt-1');
+      input.parentNode.appendChild(feedback);
+    }
+    feedback.textContent = message;
+  };
+
+  const removeFeedback = (input) => {
+    const feedback = input.nextElementSibling;
+    if (feedback && feedback.classList.contains('feedback')) {
+      feedback.textContent = '';
+    }
+  };
+
+  // Email validation
+  emailInput.addEventListener('input', () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+      createFeedback(emailInput, 'Enter a valid email address.');
+    } else {
+      removeFeedback(emailInput);
+    }
+  });
+
+  // Contact number validation
+  contactInput.addEventListener('input', () => {
+    const contactRegex = /^\d{10}$/;
+    if (contactInput.value && !contactRegex.test(contactInput.value)) {
+      createFeedback(contactInput, 'Contact must be exactly 10 digits.');
+    } else {
+      removeFeedback(contactInput);
+    }
+  });
+
+  // Final form validation before submit
+  form.addEventListener('submit', (e) => {
+    let valid = true;
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+      createFeedback(emailInput, 'Enter a valid email address.');
+      valid = false;
+    }
+
+    // Validate contact
+    const contactRegex = /^\d{10}$/;
+    if (contactInput.value && !contactRegex.test(contactInput.value)) {
+      createFeedback(contactInput, 'Contact must be exactly 10 digits.');
+      valid = false;
+    }
+
+    if (!valid) e.preventDefault(); // Prevent form submission if invalid
+  });
+});
+</script>
 
         </div>
         </main>

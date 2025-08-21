@@ -122,18 +122,18 @@
             <div class="font-['Pacifico'] text-white text-2xl">MPC</div>
         </div>
         <div class="flex items-center space-x-4">
+            
             <div class="w-8 h-8 flex items-center justify-center text-white relative">
-                <i class="ri-notification-3-line ri-lg"></i>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
-            </div>
-            <div class="w-8 h-8 flex items-center justify-center text-white relative">
+                <a href="/chat">
                 <i class="ri-message-3-line ri-lg"></i>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                <span class="absolute -top-1 -right-1  text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                </span>
+                </a>
             </div>
             <div class="profile-dropdown">
                 <button class="flex items-center space-x-2">
                     <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                        <img src="/uploads/<%= user.profilePicture %>"  alt="Profile" class="w-full h-full object-cover">
+                        <img src="<%= user.profilePicture %>?t=<%= Date.now() %>" alt="Profile" class="w-full h-full object-cover">
                     </div>
                 </button>
                 <div class="profile-options">
@@ -141,7 +141,7 @@
                         <p class="text-sm font-medium"><%= user.fullName %></p>
                         <p class="text-xs text-gray-500"><%= user.role %></p>
                     </div>
-                    <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100">
+                    <a href="/dashboard/profile" class="flex items-center px-4 py-2 hover:bg-gray-100">
                         <i class="ri-user-line mr-2"></i>
                         <span>My Profile</span>
                     </a>
@@ -365,163 +365,6 @@
                                 5
                             </span>
                             <span class="text-gray-500 ml-2">new since yesterday</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Schedule and Chart Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <!-- Schedule Overview -->
-                    <div class="bg-white rounded shadow-sm p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-semibold text-gray-800">Today's Schedule</h2>
-                            <div id="datetime2" class="text-sm text-gray-500">Tuesday, April 29, 2025</div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex">
-                                <div class="w-16 text-sm text-gray-500 flex-shrink-0">8:00 AM</div>
-                                <div class="flex-1 ml-4 pl-4 border-l-2 border-blue-400">
-                                    <div class="bg-blue-50 p-3 rounded">
-                                        <div class="font-medium text-gray-800">Grade 10A - Physics</div>
-                                        <div class="text-sm text-gray-600">Room 205 • 45 students</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex">
-                                <div class="w-16 text-sm text-gray-500 flex-shrink-0">9:30 AM</div>
-                                <div class="flex-1 ml-4 pl-4 border-l-2 border-green-400">
-                                    <div class="bg-green-50 p-3 rounded">
-                                        <div class="font-medium text-gray-800">Grade 11B - Chemistry</div>
-                                        <div class="text-sm text-gray-600">Lab 103 • 38 students</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex">
-                                <div class="w-16 text-sm text-gray-500 flex-shrink-0">11:00 AM</div>
-                                <div class="flex-1 ml-4 pl-4 border-l-2 border-gray-300">
-                                    <div class="bg-gray-50 p-3 rounded">
-                                        <div class="font-medium text-gray-800">Break Time</div>
-                                        <div class="text-sm text-gray-600">Staff Room</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex">
-                                <div class="w-16 text-sm text-gray-500 flex-shrink-0">12:15 PM</div>
-                                <div class="flex-1 ml-4 pl-4 border-l-2 border-purple-400">
-                                    <div class="bg-purple-50 p-3 rounded">
-                                        <div class="font-medium text-gray-800">Grade 9C - Biology</div>
-                                        <div class="text-sm text-gray-600">Room 108 • 42 students</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex">
-                                <div class="w-16 text-sm text-gray-500 flex-shrink-0">2:00 PM</div>
-                                <div class="flex-1 ml-4 pl-4 border-l-2 border-yellow-400">
-                                    <div class="bg-yellow-50 p-3 rounded">
-                                        <div class="font-medium text-gray-800">Science Department Meeting</div>
-                                        <div class="text-sm text-gray-600">Conference Room • 8 teachers</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Student Performance Chart -->
-                    <div class="bg-white rounded shadow-sm p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-semibold text-gray-800">Student Performance</h2>
-                            <select class="border border-gray-300 rounded text-sm px-3 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option>Last 30 Days</option>
-                                <option>Last Quarter</option>
-                                <option>Last Semester</option>
-                            </select>
-                        </div>
-                        <div id="performance-chart" class="w-full h-64"></div>
-                    </div>
-                </div>
-
-                <!-- Recent Activities Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    
-                    
-                    <!-- Recent Announcements -->
-                    <div class="bg-white rounded shadow-sm p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-semibold text-gray-800">Recent Announcements</h2>
-                            <a href="#" class="text-primary text-sm hover:underline">View All</a>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="border-l-4 border-primary p-4 bg-gray-50 rounded-r">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div class="font-medium text-gray-800">Term Exam Schedule Released</div>
-                                    <div class="text-xs text-gray-500">Today, 8:00 AM</div>
-                                </div>
-                                <p class="text-sm text-gray-600 mb-2">The schedule for the upcoming term examinations has been finalized. Please review and inform your students about the dates and subjects.</p>
-                                <div class="flex items-center text-xs text-gray-500">
-                                    <span class="flex items-center mr-3">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-user-line"></i>
-                                        </div>
-                                        Principal Wijayasundara
-                                    </span>
-                                    <span class="flex items-center">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-eye-line"></i>
-                                        </div>
-                                        42 views
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div class="border-l-4 border-yellow-500 p-4 bg-gray-50 rounded-r">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div class="font-medium text-gray-800">Science Fair Preparation</div>
-                                    <div class="text-xs text-gray-500">Yesterday, 2:15 PM</div>
-                                </div>
-                                <p class="text-sm text-gray-600 mb-2">All science teachers are requested to start preparing their students for the Annual Science Fair scheduled for June 15. Project proposals should be submitted by May 10.</p>
-                                <div class="flex items-center text-xs text-gray-500">
-                                    <span class="flex items-center mr-3">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-user-line"></i>
-                                        </div>
-                                        Dr. Jayasinghe (Head of Science)
-                                    </span>
-                                    <span class="flex items-center">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-eye-line"></i>
-                                        </div>
-                                        28 views
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div class="border-l-4 border-blue-500 p-4 bg-gray-50 rounded-r">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div class="font-medium text-gray-800">New Learning Resources Available</div>
-                                    <div class="text-xs text-gray-500">April 27, 11:30 AM</div>
-                                </div>
-                                <p class="text-sm text-gray-600 mb-2">The Ministry of Education has provided new digital learning resources for science subjects. All teachers can access these materials through the resource library.</p>
-                                <div class="flex items-center text-xs text-gray-500">
-                                    <span class="flex items-center mr-3">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-user-line"></i>
-                                        </div>
-                                        IT Department
-                                    </span>
-                                    <span class="flex items-center">
-                                        <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                            <i class="ri-eye-line"></i>
-                                        </div>
-                                        35 views
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

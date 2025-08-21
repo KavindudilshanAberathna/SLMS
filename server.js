@@ -66,6 +66,9 @@ app.use('/', messageRoutes);
 app.use('/analytics', require('./routes/analyticsRoutes'));
 const calendarRoutes = require('./routes/calendarRoutes');
 app.use('/', calendarRoutes);
+const profileRoutes = require('./routes/profileRoutes');
+app.use('/', profileRoutes);
+
 
 // ----------------- SOCKET.IO SETUP ----------------- //
 const server = http.createServer(app);
