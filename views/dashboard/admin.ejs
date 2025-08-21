@@ -296,7 +296,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="text-3xl font-semibold text-gray-800">187</div>
+                                <div class="text-3xl font-semibold text-gray-800"><%= stats.totalStudents %></div>
                                 <div class="text-sm text-gray-500">Total Students</div>
                             </div>
                         </div>
@@ -319,7 +319,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="text-3xl font-semibold text-gray-800">6</div>
+                                <div class="text-3xl font-semibold text-gray-800"><%= stats.totalSubjects %></div>
                                 <div class="text-sm text-gray-500">Active Courses</div>
                             </div>
                         </div>
@@ -336,12 +336,12 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="text-3xl font-semibold text-gray-800">8</div>
-                                <div class="text-sm text-gray-500">Assignments Due Soon</div>
+                                <div class="text-3xl font-semibold text-gray-800"><%= stats.totalMessages %></div>
+                                <div class="text-sm text-gray-500">Messages</div>
                             </div>
                         </div>
                         <div class="mt-4 text-sm text-gray-500">
-                            Next 7 days
+                            Last 7 days
                         </div>
                     </div>
                     
@@ -353,8 +353,8 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="text-3xl font-semibold text-gray-800">23</div>
-                                <div class="text-sm text-gray-500">Pending Grading</div>
+                                <div class="text-3xl font-semibold text-gray-800"><%= stats.totalTeachers %></div>
+                                <div class="text-sm text-gray-500">Total Teachers</div>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center text-sm">

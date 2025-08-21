@@ -292,13 +292,55 @@ router.get('/parent', isAuthenticated, authorizeRoles('parent'), (req, res) => {
 // Admin Dashboard
 router.get('/admin', isAuthenticated, authorizeRoles('admin'), async (req, res) => {
   try {
-    const teachers = await User.find({ role: 'teacher' }); // Fetch all teachers
+    // Total teachers and students
+    const totalTeachers = await User.countDocuments({ role: 'teacher' });
+    const totalStudents = await User.countDocuments({ role: 'student' });
+
+    // Total subjects assigned
+    const totalSubjects = await SubjectAssignment.countDocuments();
+
+    // Total messages involving admin
+    const adminId = req.session.user._id;
+    const totalMessages = await Message.countDocuments({
+      $or: [
+        { sender: adminId },
+        { receiver: adminId }
+      ]
+    });
+
+    // Optional: Recent messages
+    const recentMessages = await Message.find({
+      $or: [
+        { sender: adminId },
+        { receiver: adminId }
+      ]
+    })
+      .sort({ sentAt: -1 })
+      .limit(5)
+      .populate('sender', 'fullName role')
+      .populate('receiver', 'fullName role');
+
+    // Optional: Today’s schedule if admin manages timetable
+    const today = new Date().toLocaleString('en-US', { weekday: 'long' });
+    const todaySchedule = await Timetable.find({ day: today })
+      .populate('teacher', 'fullName')
+      .populate('subject')
+      .sort({ period: 1 });
+
+    // Fetch success message if exists
     const success_msg = req.session.success_msg;
     delete req.session.success_msg;
 
     res.render('dashboard/admin', {
       user: req.session.user,
-      teachers,
+      stats: {
+        totalStudents,
+        totalTeachers,
+        totalSubjects,
+        totalMessages
+      },
+      recentMessages,
+      todaySchedule,
       success_msg
     });
 
