@@ -233,18 +233,90 @@
                     </div>
                 </div>
             </div>
-            <!-- Student Performance Chart -->
-                    <div class="bg-white rounded shadow-sm p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg font-semibold text-gray-800">Student Performance</h2>
-                            <select class="border border-gray-300 rounded text-sm px-3 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                <option>Last 30 Days</option>
-                                <option>Last Quarter</option>
-                                <option>Last Semester</option>
-                            </select>
-                        </div>
-                        <div id="performance-chart" class="w-full h-64"></div>
-                    </div>
+               
+        <!-- Inside <main> after Welcome Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+  <!-- Today's Timetable -->
+  <div class="bg-white rounded shadow-sm p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+        <i class="ri-calendar-todo-line text-primary mr-2"></i> Today’s Timetable
+      </h2>
+      <div id="studentDate" class="text-sm text-gray-500"><%= new Date().toDateString() %></div>
+    </div>
+
+    <!-- Today's Schedule Section -->
+    <%
+      // Get current day name
+      const daysOfWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const todayName = daysOfWeek[new Date().getDay()];
+
+      // Filter timetable for today's entries
+      const todaySchedule = timetable.filter(entry => entry.day === todayName);
+
+      // Assign background colors to subjects
+      const subjectColors = {};
+      const availableColors = ['bg-yellow-100', 'bg-green-100', 'bg-blue-100', 'bg-red-100', 'bg-purple-100', 'bg-pink-100', 'bg-orange-100'];
+      let colorIndex = 0;
+      todaySchedule.forEach(entry => {
+        if (entry.subject && !subjectColors[entry.subject.name]) {
+          subjectColors[entry.subject.name] = availableColors[colorIndex % availableColors.length];
+          colorIndex++;
+        }
+      });
+
+      // Define period times
+      const periodTimes = {
+        1: '7:50 - 8:30',
+        2: '8:30 - 9:10',
+        3: '9:10 - 9:50',
+        4: '9:50 - 10:30',
+        5: '10:45 - 11:30',
+        6: '11:30 - 12:10',
+        7: '12:10 - 12:50',
+        8: '12:50 - 1:30'
+      };
+    %>
+
+    <% if(todaySchedule.length > 0) { %>
+      <div class="space-y-4">
+        <% todaySchedule.forEach(item => { %>
+          <div class="flex">
+            <div class="w-28 text-sm text-gray-500 flex-shrink-0">
+              Period <%= item.period %><br>
+              <span class="text-xs text-gray-400"><%= periodTimes[item.period] || '' %></span>
+            </div>
+            <div class="flex-1 ml-4 pl-4 border-l-2 border-gray-300">
+              <div class="<%= subjectColors[item.subject.name] || 'bg-gray-50' %> p-3 rounded">
+                <div class="font-medium text-gray-800">
+                  Grade <%= item.grade %><%= item.stream || '' %> - <%= item.subject.name %>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">
+                  Teacher: <%= item.teacher.fullName %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-gray-400 text-center py-6">No classes scheduled for today.</p>
+    <% } %>
+  </div>
+
+</div>
+
+
+<script>
+  function updateStudentDate() {
+    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    document.getElementById('studentDate').innerText = new Date().toLocaleDateString('en-US', options);
+  }
+  updateStudentDate();
+</script>
+
+
         </div>
     </main>
 

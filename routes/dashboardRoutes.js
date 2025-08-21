@@ -10,24 +10,31 @@ const path = require('path');
 const Message = require('../models/Message');
 const Timetable = require('../models/Timetable');
 
-
-// Student Dashboard
+//student dashboard
 router.get('/student', isAuthenticated, authorizeRoles('student'), async (req, res) => {
   try {
     const user = await User.findById(req.session.user._id);
-    if (user) {
-      const success_msg = req.session.success_msg;
-      delete req.session.success_msg; // clear after using
+    console.log('User:', user);
 
-      res.render('dashboard/student', { 
+    if (!user) return res.redirect('/login');
+
+    const success_msg = req.session.success_msg;
+    delete req.session.success_msg;
+
+    const timetable = await Timetable.find({ grade: user.grade })
+      .populate('subject')
+      .populate('teacher');
+
+    console.log('Timetable:', timetable);
+
+    res.render('dashboard/student', { 
       user, 
-      success_msg 
-});
-    } else {
-      res.redirect('/login');
-    }
+      success_msg,
+      timetable
+    });
+
   } catch (err) {
-    console.error(err);
+    console.error('Dashboard error:', err);
     res.status(500).send("Error loading student dashboard");
   }
 });
